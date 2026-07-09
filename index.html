@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Your Dream Website Built</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #000; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOutDown {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
+            50% { box-shadow: 0 0 40px rgba(99,102,241,0.6); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        @keyframes confetti-burst {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0); opacity: 0; }
+        }
+        @keyframes check-draw {
+            from { stroke-dashoffset: 40; }
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes ring-pop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes text-reveal {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bg-particles {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .step-enter { animation: fadeInUp 0.5s ease-out forwards; }
+        .step-exit { animation: fadeOutDown 0.3s ease-in forwards; }
+        .scale-enter { animation: scaleIn 0.4s ease-out forwards; }
+
+        .shimmer-btn {
+            background: linear-gradient(110deg, #4F46E5 0%, #6366f1 25%, #818cf8 50%, #6366f1 75%, #4F46E5 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+        .shimmer-btn:hover {
+            animation: shimmer 1.5s linear infinite;
+        }
+
+        /* Option cards */
+        .option-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .option-card:hover {
+            border-color: rgba(99,102,241,0.4);
+            background: rgba(99,102,241,0.05);
+            transform: translateY(-2px);
+        }
+        .option-card.selected {
+            border-color: #6366f1;
+            background: rgba(99,102,241,0.12);
+            box-shadow: 0 0 20px rgba(99,102,241,0.15);
+        }
+        .option-card.selected .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .check-icon {
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        /* Multi-select chips */
+        .chip {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .chip:hover {
+            border-color: rgba(99,102,241,0.5);
+            background: rgba(99,102,241,0.08);
+        }
+        .chip.selected {
+            border-color: #6366f1;
+            background: rgba(99,102,241,0.15);
+            color: #a5b4fc;
+        }
+
+        /* Input styles */
+        .form-input {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+            background: rgba(255,255,255,0.05);
+        }
+        .form-input::placeholder { color: #525252; }
+
+        textarea.form-input { resize: vertical; min-height: 100px; }
+
+        /* Progress bar */
+        .progress-fill {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Step indicator dots */
+        .step-dot {
+            transition: all 0.4s ease;
+        }
+        .step-dot.active {
+            background: #6366f1;
+            box-shadow: 0 0 12px rgba(99,102,241,0.5);
+            transform: scale(1.2);
+        }
+        .step-dot.completed {
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34,197,94,0.4);
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            animation: confetti-burst 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .confetti-piece.circle { border-radius: 50%; }
+        .confetti-piece.long { width: 6px; height: 18px; border-radius: 3px; }
+
+        /* Success overlay */
+        .success-overlay {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* BG glow orbs */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            animation: bg-particles 8s ease-in-out infinite;
+        }
+
+        /* Tooltip for required */
+        .required-star { color: #EF4444; }
+
+        /* Smooth step transitions */
+        .step-container { position: relative; min-height: 400px; }
+    </style>
+</head>
+<body class="min-h-screen text-white overflow-x-hidden">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="bg-orb" style="width:600px;height:600px;background:rgba(99,102,241,0.06);top:-200px;right:-200px;animation-delay:0s;"></div>
+        <div class="bg-orb" style="width:500px;height:500px;background:rgba(139,92,246,0.04);bottom:-150px;left:-150px;animation-delay:3s;"></div>
+        <div class="bg-orb" style="width:300px;height:300px;background:rgba(99,102,241,0.03);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:5s;"></div>
+        <!-- Grid pattern -->
+        <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+
+        <!-- Header -->
+        <header class="pt-8 pb-4 px-6">
+            <div class="max-w-3xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center">
+                        <i data-lucide="code-2" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-lg font-semibold tracking-tight">WebCraft</span>
+                </div>
+                <div class="text-xs text-neutral-500 font-medium tracking-wide uppercase">Your hosted website for only 10 USD per month !!!</div>
+            </div>
+        </header>
+
+        <!-- Progress Section -->
+        <div class="px-6 pt-4 pb-2">
+            <div class="max-w-3xl mx-auto">
+                <!-- Progress Bar -->
+                <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-6">
+                    <div id="progressBar" class="progress-fill h-full rounded-full bg-gradient-to-r from-indigo-600 to-indigo-400" style="width: 20%"></div>
+                </div>
+                <!-- Step Dots -->
+                <div class="flex items-center justify-center gap-3 mb-2">
+                    <div class="step-dot active w-3 h-3 rounded-full bg-neutral-700" data-step="1"></div>
+                    <div class="w-8 h-px bg-white/10"></div>
+                    <div class="step-dot w-3 h-3 rounded-full bg-neutral-700" data-step="2"></div>
+                    <div class="w-8 h-px bg-white/10"></div>
+                    <div class="step-dot w-3 h-3 rounded-full bg-neutral-700" data-step="3"></div>
+                    <div class="w-8 h-px bg-white/10"></div>
+                    <div class="step-dot w-3 h-3 rounded-full bg-neutral-700" data-step="4"></div>
+                    <div class="w-8 h-px bg-white/10"></div>
+                    <div class="step-dot w-3 h-3 rounded-full bg-neutral-700" data-step="5"></div>
+                </div>
+                <p id="stepLabel" class="text-center text-xs text-neutral-500 font-medium tracking-wide">Step 1 of 5 — Project Basics</p>
+            </div>
+        </div>
+
+        <!-- Form Area -->
+        <main class="flex-1 px-6 py-8">
+            <div class="max-w-3xl mx-auto">
+                <div class="step-container">
+
+                    <!-- STEP 1: Project Basics -->
+                    <div id="step1" class="step-content step-enter">
+                        <div class="text-center mb-10">
+                            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Let's build your <span class="font-playfair text-indigo-400">dream website</span></h1>
+                            <p class="text-neutral-400 text-base max-w-lg mx-auto">Answer a few quick questions so we can craft the perfect website for you. You only pay us 10 USD per month, if you are satisfied with our service.</p>
+                        </div>
+
+                        <div class="space-y-6 max-w-xl mx-auto">
+                            <!-- Business Name -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-2">Business / Website Name <span class="required-star">*</span></label>
+                                <input type="text" id="businessName" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="e.g. Acme Studios, FreshBite, John Doe Portfolio">
+                            </div>
+
+                            <!-- What do you do -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-2">What does your business do? <span class="required-star">*</span></label>
+                                <textarea id="businessDesc" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="Briefly describe your business, products, or services..."></textarea>
+                            </div>
+
+                            <!-- Website Purpose -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-3">What is the primary purpose? <span class="required-star">*</span></label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="purposeOptions">
+                                    <div class="option-card rounded-xl p-4 flex items-center gap-3" data-value="Business/Corporate">
+                                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                            <i data-lucide="building-2" class="w-5 h-5 text-neutral-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">Business / Corporate</div>
+                                            <div class="text-xs text-neutral-500">Company presence & credibility</div>
+                                        </div>
+                                        <div class="check-icon"><i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-400"></i></div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 flex items-center gap-3" data-value="Portfolio">
+                                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                            <i data-lucide="briefcase" class="w-5 h-5 text-neutral-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">Portfolio</div>
+                                            <div class="text-xs text-neutral-500">Showcase work & projects</div>
+                                        </div>
+                                        <div class="check-icon"><i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-400"></i></div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 flex items-center gap-3" data-value="E-commerce">
+                                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                            <i data-lucide="shopping-cart" class="w-5 h-5 text-neutral-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">E-commerce</div>
+                                            <div class="text-xs text-neutral-500">Sell products online</div>
+                                        </div>
+                                        <div class="check-icon"><i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-400"></i></div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 flex items-center gap-3" data-value="Blog/Content">
+                                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                            <i data-lucide="pen-line" class="w-5 h-5 text-neutral-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">Blog / Content</div>
+                                            <div class="text-xs text-neutral-500">Articles, guides, news</div>
+                                        </div>
+                                        <div class="check-icon"><i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-400"></i></div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 flex items-center gap-3" data-value="SaaS/Product">
+                                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                            <i data-lucide="rocket" class="w-5 h-5 text-neutral-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">SaaS / Product</div>
+                                            <div class="text-xs text-neutral-500">Landing page for a product</div>
+                                        </div>
+                                        <div class="check-icon"><i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-400"></i></div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 flex items-center gap-3" data-value="Landing Page">
+                                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                            <i data-lucide="target" class="w-5 h-5 text-neutral-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">Landing Page</div>
+                                            <div class="text-xs text-neutral-500">Lead capture, campaign</div>
+                                        </div>
+                                        <div class="check-icon"><i data-lucide="check-circle-2" class="w-5 h-5 text-indigo-400"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: Design & Style -->
+                    <div id="step2" class="step-content hidden">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Design & <span class="font-playfair text-indigo-400">Style</span></h2>
+                            <p class="text-neutral-400 text-base max-w-lg mx-auto">Tell us about the look and feel you're going for.</p>
+                        </div>
+
+                        <div class="space-y-8 max-w-xl mx-auto">
+                            <!-- Color Preference -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-3">Color scheme preference <span class="required-star">*</span></label>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="colorOptions">
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Dark & Moody">
+                                        <div class="flex justify-center gap-1.5 mb-2">
+                                            <div class="w-6 h-6 rounded-full bg-neutral-900 border border-white/10"></div>
+                                            <div class="w-6 h-6 rounded-full bg-indigo-600"></div>
+                                            <div class="w-6 h-6 rounded-full bg-purple-600"></div>
+                                        </div>
+                                        <div class="text-sm font-medium">Dark & Moody</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Clean & Light">
+                                        <div class="flex justify-center gap-1.5 mb-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-neutral-300"></div>
+                                            <div class="w-6 h-6 rounded-full bg-sky-500"></div>
+                                            <div class="w-6 h-6 rounded-full bg-slate-200"></div>
+                                        </div>
+                                        <div class="text-sm font-medium">Clean & Light</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Warm & Earthy">
+                                        <div class="flex justify-center gap-1.5 mb-2">
+                                            <div class="w-6 h-6 rounded-full bg-amber-700"></div>
+                                            <div class="w-6 h-6 rounded-full bg-orange-500"></div>
+                                            <div class="w-6 h-6 rounded-full bg-yellow-600"></div>
+                                        </div>
+                                        <div class="text-sm font-medium">Warm & Earthy</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Vibrant & Bold">
+                                        <div class="flex justify-center gap-1.5 mb-2">
+                                            <div class="w-6 h-6 rounded-full bg-pink-500"></div>
+                                            <div class="w-6 h-6 rounded-full bg-cyan-400"></div>
+                                            <div class="w-6 h-6 rounded-full bg-yellow-400"></div>
+                                        </div>
+                                        <div class="text-sm font-medium">Vibrant & Bold</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Minimal Monochrome">
+                                        <div class="flex justify-center gap-1.5 mb-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-neutral-300"></div>
+                                            <div class="w-6 h-6 rounded-full bg-neutral-800"></div>
+                                            <div class="w-6 h-6 rounded-full bg-neutral-500"></div>
+                                        </div>
+                                        <div class="text-sm font-medium">Minimal Monochrome</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Nature/Green">
+                                        <div class="flex justify-center gap-1.5 mb-2">
+                                            <div class="w-6 h-6 rounded-full bg-emerald-600"></div>
+                                            <div class="w-6 h-6 rounded-full bg-green-400"></div>
+                                            <div class="w-6 h-6 rounded-full bg-lime-500"></div>
+                                        </div>
+                                        <div class="text-sm font-medium">Nature / Green</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vibe -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-3">What vibe should it have? <span class="required-star">*</span></label>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="vibeOptions">
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Minimalist">
+                                        <i data-lucide="minus" class="w-5 h-5 mx-auto mb-2 text-neutral-400"></i>
+                                        <div class="text-sm font-medium">Minimalist</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Professional">
+                                        <i data-lucide="graduation-cap" class="w-5 h-5 mx-auto mb-2 text-neutral-400"></i>
+                                        <div class="text-sm font-medium">Professional</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Playful & Fun">
+                                        <i data-lucide="party-popper" class="w-5 h-5 mx-auto mb-2 text-neutral-400"></i>
+                                        <div class="text-sm font-medium">Playful & Fun</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Luxurious">
+                                        <i data-lucide="gem" class="w-5 h-5 mx-auto mb-2 text-neutral-400"></i>
+                                        <div class="text-sm font-medium">Luxurious</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Bold & Edgy">
+                                        <i data-lucide="zap" class="w-5 h-5 mx-auto mb-2 text-neutral-400"></i>
+                                        <div class="text-sm font-medium">Bold & Edgy</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Friendly & Approachable">
+                                        <i data-lucide="smile" class="w-5 h-5 mx-auto mb-2 text-neutral-400"></i>
+                                        <div class="text-sm font-medium">Friendly</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reference Sites -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-2">Any reference websites you love? <span class="text-neutral-600 text-xs">(optional)</span></label>
+                                <input type="text" id="referenceSites" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="e.g. apple.com, stripe.com, awwwards.com/...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: Pages & Content -->
+                    <div id="step3" class="step-content hidden">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Pages & <span class="font-playfair text-indigo-400">Content</span></h2>
+                            <p class="text-neutral-400 text-base max-w-lg mx-auto">What pages and key messages do you need?</p>
+                        </div>
+
+                        <div class="space-y-8 max-w-xl mx-auto">
+                            <!-- Required Pages -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-3">Which pages do you need? <span class="required-star">*</span> <span class="text-neutral-600 text-xs">(select all that apply)</span></label>
+                                <div class="flex flex-wrap gap-2.5" id="pagesOptions">
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Home">Home</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="About">About</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Services">Services</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Products">Products</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Portfolio">Portfolio</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Blog">Blog</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Pricing">Pricing</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Testimonials">Testimonials</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="FAQ">FAQ</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Contact">Contact</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Team">Team</div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Case Studies">Case Studies</div>
+                                </div>
+                            </div>
+
+                            <!-- Key Message -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-2">What's the key message on your homepage? <span class="required-star">*</span></label>
+                                <textarea id="keyMessage" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="e.g. 'We help small businesses grow with affordable digital marketing solutions.'"></textarea>
+                            </div>
+
+                            <!-- Call to Action -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-2">Primary call-to-action button text <span class="required-star">*</span></label>
+                                <input type="text" id="ctaText" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="e.g. Get Started, Book a Call, Shop Now, Learn More">
+                            </div>
+
+                            <!-- Do you have content ready -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-3">Do you have content ready? <span class="required-star">*</span></label>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="contentReady">
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Yes, all ready">
+                                        <i data-lucide="file-check" class="w-5 h-5 mx-auto mb-2 text-green-400"></i>
+                                        <div class="text-sm font-medium">All Ready</div>
+                                        <div class="text-xs text-neutral-500">Text, images, logos</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Partially ready">
+                                        <i data-lucide="file-text" class="w-5 h-5 mx-auto mb-2 text-amber-400"></i>
+                                        <div class="text-sm font-medium">Partial</div>
+                                        <div class="text-xs text-neutral-500">Some content ready</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="Need help with content">
+                                        <i data-lucide="file-plus" class="w-5 h-5 mx-auto mb-2 text-indigo-400"></i>
+                                        <div class="text-sm font-medium">Need Help</div>
+                                        <div class="text-xs text-neutral-500">Generate content for me</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: Features & Functionality -->
+                    <div id="step4" class="step-content hidden">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Features & <span class="font-playfair text-indigo-400">Functionality</span></h2>
+                            <p class="text-neutral-400 text-base max-w-lg mx-auto">Any special features or integrations you need?</p>
+                        </div>
+
+                        <div class="space-y-8 max-w-xl mx-auto">
+                            <!-- Features -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-3">Features you need <span class="text-neutral-600 text-xs">(select all that apply)</span></label>
+                                <div class="flex flex-wrap gap-2.5" id="featuresOptions">
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Contact Form">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="mail" class="w-3.5 h-3.5"></i> Contact Form</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Newsletter Signup">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="newspaper" class="w-3.5 h-3.5"></i> Newsletter</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Image/Video Gallery">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="image" class="w-3.5 h-3.5"></i> Gallery</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Booking/Appointment">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Booking</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Payment Integration">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="credit-card" class="w-3.5 h-3.5"></i> Payments</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Social Media Links">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="share-2" class="w-3.5 h-3.5"></i> Social Links</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Google Maps">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Google Maps</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Dark Mode Toggle">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="moon" class="w-3.5 h-3.5"></i> Dark Mode</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Animations/Scroll Effects">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Animations</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="SEO Optimization">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="search" class="w-3.5 h-3.5"></i> SEO</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Live Chat Widget">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Live Chat</span>
+                                    </div>
+                                    <div class="chip px-4 py-2.5 rounded-full border border-white/10 text-sm" data-value="Testimonials/Reviews">
+                                        <span class="flex items-center gap-1.5"><i data-lucide="star" class="w-3.5 h-3.5"></i> Reviews</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Additional Notes -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-2">Any other specific requirements? <span class="text-neutral-600 text-xs">(optional)</span></label>
+                                <textarea id="additionalNotes" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="e.g. 'I need a countdown timer on the landing page', 'Must support RTL languages', 'Should integrate with Mailchimp'..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: Your Details -->
+                    <div id="step5" class="step-content hidden">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-3">Almost <span class="font-playfair text-indigo-400">there!</span></h2>
+                            <p class="text-neutral-400 text-base max-w-lg mx-auto">Just your contact details and we're all set.</p>
+                        </div>
+
+                        <div class="space-y-6 max-w-xl mx-auto">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-300 mb-2">Your Name <span class="required-star">*</span></label>
+                                    <input type="text" id="userName" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="John Doe">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-300 mb-2">Email <span class="required-star">*</span></label>
+                                    <input type="email" id="userEmail" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="john@example.com">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-300 mb-2">Phone <span class="required-star">*</span></label>
+                                    <input type="tel" id="userPhone" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="+1 (555) 000-0000">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-300 mb-2">Domain Name <span class="text-neutral-600 text-xs">(optional)</span></label>
+                                    <input type="text" id="domainName" class="form-input w-full px-4 py-3.5 rounded-xl text-white text-sm" placeholder="www.yourdomain.com">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-300 mb-2">Preferred timeline <span class="required-star">*</span></label>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="timelineOptions">
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="ASAP">
+                                        <i data-lucide="flame" class="w-5 h-5 mx-auto mb-2 text-red-400"></i>
+                                        <div class="text-sm font-medium">ASAP</div>
+                                        <div class="text-xs text-neutral-500">Rush delivery</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="1-2 Weeks">
+                                        <i data-lucide="clock" class="w-5 h-5 mx-auto mb-2 text-amber-400"></i>
+                                        <div class="text-sm font-medium">1–2 Weeks</div>
+                                        <div class="text-xs text-neutral-500">Standard</div>
+                                    </div>
+                                    <div class="option-card rounded-xl p-4 text-center" data-value="No Rush">
+                                        <i data-lucide="coffee" class="w-5 h-5 mx-auto mb-2 text-green-400"></i>
+                                        <div class="text-sm font-medium">No Rush</div>
+                                        <div class="text-xs text-neutral-500">Take your time</div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div id="navButtons" class="max-w-xl mx-auto flex items-center justify-between mt-10">
+                    <button id="prevBtn" onclick="prevStep()" class="hidden items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 transition-all duration-300">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        Back
+                    </button>
+                    <div class="flex-1"></div>
+                    <button id="nextBtn" onclick="nextStep()" class="shimmer-btn px-8 py-3.5 rounded-xl text-sm font-semibold text-white hover:scale-105 transition-transform duration-300 flex items-center gap-2">
+                        Continue
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                    <button id="submitBtn" onclick="submitForm()" class="hidden shimmer-btn px-10 py-3.5 rounded-xl text-sm font-semibold text-white hover:scale-105 transition-transform duration-300 flex items-center gap-2" style="animation: pulse-glow 2s ease-in-out infinite;">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-6 px-6 text-center">
+            <p class="text-xs text-neutral-600">Your data is safe with us. We'll only use it to build your website.</p>
+        </footer>
+    </div>
+
+    <!-- Success Overlay -->
+    <div id="successOverlay" class="fixed inset-0 z-50 hidden success-overlay bg-black/80 flex items-center justify-center p-6">
+        <div id="successContent" class="text-center max-w-lg">
+            <!-- Success Icon -->
+            <div class="mb-8 relative inline-block">
+                <div id="successRing" class="w-24 h-24 rounded-full border-4 border-green-400 flex items-center justify-center" style="animation: ring-pop 0.5s ease-out 0.3s both;">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path id="checkPath" d="M10 20 L17 28 L30 12" stroke="#22c55e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40" style="animation: check-draw 0.6s ease-out 0.8s forwards;"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- Success Text -->
+            <h2 id="successTitle" class="text-2xl md:text-3xl font-semibold tracking-tight mb-4 opacity-0" style="animation: text-reveal 0.6s ease-out 1.2s forwards;">
+                Great, we have all the information required to build your <span class="font-playfair text-green-400">dream website</span>
+            </h2>
+            <p id="successSub" class="text-neutral-400 text-base mb-8 opacity-0" style="animation: text-reveal 0.6s ease-out 1.5s forwards;">
+                We will contact you shortly to get started!
+            </p>
+            <div id="successDetails" class="opacity-0 text-left bg-white/5 rounded-2xl p-6 border border-white/5" style="animation: text-reveal 0.6s ease-out 1.8s forwards;">
+                <div class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-4">Your Summary</div>
+                <div id="summaryContent" class="space-y-2.5 text-sm"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation Toast -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 hidden">
+        <div class="bg-red-500/90 backdrop-blur-md text-white px-6 py-3 rounded-xl text-sm font-medium flex items-center gap-2 shadow-lg shadow-red-500/20">
+            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+            <span id="toastMsg">Please fill in all required fields</span>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // State
+        let currentStep = 1;
+        const totalSteps = 5;
+        const formData = {
+            businessName: '',
+            businessDesc: '',
+            purpose: '',
+            colorScheme: '',
+            vibe: '',
+            referenceSites: '',
+            pages: [],
+            keyMessage: '',
+            ctaText: '',
+            contentReady: '',
+            features: [],
+            additionalNotes: '',
+            userName: '',
+            userEmail: '',
+            userPhone: '',
+            domainName: '',
+            timeline: '',
+            budget: ''
+        };
+
+        // Paste your deployed Google Apps Script web app URL here to enable sheet writes.
+        const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxWqMinytgJPnEbsm4mR5SPd3ZGrJ2EWmhMEjtN6Rrv6iB4SaXlQsTmtL3Rfzylj4XPqw/exec';
+
+        const stepLabels = [
+            'Step 1 of 5 — Project Basics',
+            'Step 2 of 5 — Design & Style',
+            'Step 3 of 5 — Pages & Content',
+            'Step 4 of 5 — Features & Functionality',
+            'Step 5 of 5 — Your Details'
+        ];
+
+        // Single-select option cards
+        document.querySelectorAll('#purposeOptions .option-card, #colorOptions .option-card, #vibeOptions .option-card, #contentReady .option-card, #timelineOptions .option-card, #budgetOptions .option-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const parent = card.parentElement;
+                parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+        });
+
+        // Multi-select chips
+        document.querySelectorAll('#pagesOptions .chip, #featuresOptions .chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('selected');
+            });
+        });
+
+        // Collect data from current step
+        function collectStepData(step) {
+            switch(step) {
+                case 1:
+                    formData.businessName = document.getElementById('businessName').value.trim();
+                    formData.businessDesc = document.getElementById('businessDesc').value.trim();
+                    const purposeSel = document.querySelector('#purposeOptions .option-card.selected');
+                    formData.purpose = purposeSel ? purposeSel.dataset.value : '';
+                    break;
+                case 2:
+                    const colorSel = document.querySelector('#colorOptions .option-card.selected');
+                    formData.colorScheme = colorSel ? colorSel.dataset.value : '';
+                    const vibeSel = document.querySelector('#vibeOptions .option-card.selected');
+                    formData.vibe = vibeSel ? vibeSel.dataset.value : '';
+                    formData.referenceSites = document.getElementById('referenceSites').value.trim();
+                    break;
+                case 3:
+                    formData.pages = [...document.querySelectorAll('#pagesOptions .chip.selected')].map(c => c.dataset.value);
+                    formData.keyMessage = document.getElementById('keyMessage').value.trim();
+                    formData.ctaText = document.getElementById('ctaText').value.trim();
+                    const contentSel = document.querySelector('#contentReady .option-card.selected');
+                    formData.contentReady = contentSel ? contentSel.dataset.value : '';
+                    break;
+                case 4:
+                    formData.features = [...document.querySelectorAll('#featuresOptions .chip.selected')].map(c => c.dataset.value);
+                    formData.additionalNotes = document.getElementById('additionalNotes').value.trim();
+                    break;
+                case 5:
+                    formData.userName = document.getElementById('userName').value.trim();
+                    formData.userEmail = document.getElementById('userEmail').value.trim();
+                    formData.userPhone = document.getElementById('userPhone').value.trim();
+                    formData.domainName = document.getElementById('domainName').value.trim();
+                    const timelineSel = document.querySelector('#timelineOptions .option-card.selected');
+                    formData.timeline = timelineSel ? timelineSel.dataset.value : '';
+                    const budgetSel = document.querySelector('#budgetOptions .option-card.selected');
+                    formData.budget = budgetSel ? budgetSel.dataset.value : '';
+                    break;
+            }
+        }
+
+        // Validation
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    if (!formData.businessName) return 'Please enter your business/website name';
+                    if (!formData.businessDesc) return 'Please describe what your business does';
+                    if (!formData.purpose) return 'Please select the website purpose';
+                    break;
+                case 2:
+                    if (!formData.colorScheme) return 'Please select a color scheme';
+                    if (!formData.vibe) return 'Please select a vibe/style';
+                    break;
+                case 3:
+                    if (formData.pages.length === 0) return 'Please select at least one page';
+                    if (!formData.keyMessage) return 'Please enter the key homepage message';
+                    if (!formData.ctaText) return 'Please enter a call-to-action text';
+                    if (!formData.contentReady) return 'Please select your content readiness';
+                    break;
+                case 4:
+                    // Features are optional, no validation needed
+                    break;
+                case 5:
+                    if (!formData.userName) return 'Please enter your name';
+                    if (!formData.userEmail) return 'Please enter your email';
+                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.userEmail)) return 'Please enter a valid email address';
+                    if (!formData.userPhone) return 'Please enter your phone number';
+                    if (!formData.timeline) return 'Please select a timeline';
+                    break;
+            }
+            return null;
+        }
+
+        // Show toast
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('hidden');
+            toast.style.animation = 'fadeInUp 0.3s ease-out';
+            setTimeout(() => {
+                toast.style.animation = 'fadeOutDown 0.3s ease-in forwards';
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3000);
+        }
+
+        // Update UI
+        function updateUI() {
+            // Progress
+            document.getElementById('progressBar').style.width = `${(currentStep / totalSteps) * 100}%`;
+            document.getElementById('stepLabel').textContent = stepLabels[currentStep - 1];
+
+            // Dots
+            document.querySelectorAll('.step-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'completed');
+                if (i + 1 === currentStep) dot.classList.add('active');
+                else if (i + 1 < currentStep) dot.classList.add('completed');
+            });
+
+            // Nav buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (currentStep === 1) {
+                prevBtn.classList.add('hidden');
+                prevBtn.classList.remove('flex');
+            } else {
+                prevBtn.classList.remove('hidden');
+                prevBtn.classList.add('flex');
+            }
+
+            if (currentStep === totalSteps) {
+                nextBtn.classList.add('hidden');
+                nextBtn.classList.remove('flex');
+                submitBtn.classList.remove('hidden');
+                submitBtn.classList.add('flex');
+            } else {
+                nextBtn.classList.remove('hidden');
+                nextBtn.classList.add('flex');
+                submitBtn.classList.add('hidden');
+                submitBtn.classList.remove('flex');
+            }
+
+            lucide.createIcons();
+        }
+
+        // Go to step
+        function goToStep(step) {
+            const currentEl = document.getElementById(`step${currentStep}`);
+            const nextEl = document.getElementById(`step${step}`);
+
+            currentEl.classList.add('step-exit');
+            setTimeout(() => {
+                currentEl.classList.add('hidden');
+                currentEl.classList.remove('step-exit', 'step-enter');
+
+                nextEl.classList.remove('hidden');
+                nextEl.classList.add('step-enter');
+                currentStep = step;
+                updateUI();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 250);
+        }
+
+        function nextStep() {
+            collectStepData(currentStep);
+            const error = validateStep(currentStep);
+            if (error) { showToast(error); return; }
+            if (currentStep < totalSteps) goToStep(currentStep + 1);
+        }
+
+        function prevStep() {
+            if (currentStep > 1) goToStep(currentStep - 1);
+        }
+
+        // Confetti!
+        function launchConfetti() {
+            const colors = ['#6366f1', '#818cf8', '#a5b4fc', '#22c55e', '#4ade80', '#f59e0b', '#ec4899', '#06b6d4', '#ffffff'];
+            const shapes = ['circle', 'long', 'square'];
+
+            for (let i = 0; i < 120; i++) {
+                const piece = document.createElement('div');
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                piece.className = `confetti-piece ${shape}`;
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.left = `${50 + (Math.random() - 0.5) * 20}%`;
+                piece.style.top = `${40 + (Math.random() - 0.5) * 10}%`;
+
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 200 + Math.random() * 600;
+                piece.style.setProperty('--tx', `${Math.cos(angle) * velocity}px`);
+                piece.style.setProperty('--ty', `${Math.sin(angle) * velocity - 200}px`);
+                piece.style.setProperty('--rot', `${Math.random() * 1080 - 540}deg`);
+                piece.style.animationDelay = `${Math.random() * 0.3}s`;
+                piece.style.animationDuration = `${1 + Math.random() * 1}s`;
+
+                if (shape === 'square') {
+                    piece.style.width = '8px';
+                    piece.style.height = '8px';
+                    piece.style.borderRadius = '2px';
+                }
+
+                document.body.appendChild(piece);
+                setTimeout(() => piece.remove(), 2500);
+            }
+
+            // Second burst after a beat
+            setTimeout(() => {
+                for (let i = 0; i < 80; i++) {
+                    const piece = document.createElement('div');
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    piece.className = `confetti-piece ${shape}`;
+                    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.left = `${50 + (Math.random() - 0.5) * 30}%`;
+                    piece.style.top = `${45 + (Math.random() - 0.5) * 15}%`;
+
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = 150 + Math.random() * 400;
+                    piece.style.setProperty('--tx', `${Math.cos(angle) * velocity}px`);
+                    piece.style.setProperty('--ty', `${Math.sin(angle) * velocity - 150}px`);
+                    piece.style.setProperty('--rot', `${Math.random() * 720 - 360}deg`);
+                    piece.style.animationDelay = `${Math.random() * 0.2}s`;
+                    piece.style.animationDuration = `${1.2 + Math.random() * 0.8}s`;
+
+                    if (shape === 'square') {
+                        piece.style.width = '7px';
+                        piece.style.height = '7px';
+                        piece.style.borderRadius = '2px';
+                    }
+
+                    document.body.appendChild(piece);
+                    setTimeout(() => piece.remove(), 2500);
+                }
+            }, 400);
+        }
+
+        // Sends submission data to a Google Apps Script web app that writes rows into Google Sheets.
+        function sendToGoogleSheet(payload) {
+            if (!GOOGLE_SHEETS_WEB_APP_URL) {
+                console.warn('Google Sheets integration is not configured. Set GOOGLE_SHEETS_WEB_APP_URL to enable it.');
+                return;
+            }
+
+            const body = new URLSearchParams({
+                payload: JSON.stringify(payload)
+            }).toString();
+
+            try {
+                if (navigator.sendBeacon) {
+                    const queued = navigator.sendBeacon(
+                        GOOGLE_SHEETS_WEB_APP_URL,
+                        new Blob([body], { type: 'application/x-www-form-urlencoded;charset=UTF-8' })
+                    );
+                    if (queued) {
+                        console.log('Google Sheets sync queued successfully.');
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.warn('sendBeacon failed, falling back to fetch.', err);
+            }
+
+            // no-cors lets static/front-end-only deployments submit without CORS preflight issues.
+            fetch(GOOGLE_SHEETS_WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body,
+                keepalive: true
+            })
+                .then(() => {
+                    console.log('Google Sheets sync request sent.');
+                })
+                .catch((err) => {
+                    console.error('Google Sheets sync failed:', err);
+                });
+        }
+
+        // Submit
+        function submitForm() {
+            collectStepData(5);
+            const error = validateStep(5);
+            if (error) { showToast(error); return; }
+
+            // Hide nav
+            document.getElementById('navButtons').classList.add('hidden');
+
+            // Launch confetti
+            launchConfetti();
+
+            // Show success overlay
+            setTimeout(() => {
+                const overlay = document.getElementById('successOverlay');
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+
+                // Build summary
+                const summary = document.getElementById('summaryContent');
+                const items = [
+                    { label: 'Business', value: formData.businessName },
+                    { label: 'Purpose', value: formData.purpose },
+                    { label: 'Style', value: `${formData.colorScheme} · ${formData.vibe}` },
+                    { label: 'Pages', value: formData.pages.join(', ') || '—' },
+                    { label: 'Features', value: formData.features.join(', ') || 'None selected' },
+                    { label: 'Timeline', value: formData.timeline },
+                    { label: 'Contact', value: `${formData.userName} · ${formData.userEmail}` },
+                ];
+                summary.innerHTML = items.map(item => `
+                    <div class="flex items-start gap-3">
+                        <span class="text-neutral-600 text-xs font-medium pt-0.5 w-20 flex-shrink-0">${item.label}</span>
+                        <span class="text-neutral-300">${item.value}</span>
+                    </div>
+                `).join('');
+
+                // Console log for copypaste into Copilot
+                const copilotPrompt = `Build a website with the following specifications:
+- Business Name: ${formData.businessName}
+- Business Description: ${formData.businessDesc}
+- Website Purpose: ${formData.purpose}
+- Color Scheme: ${formData.colorScheme}
+- Vibe/Style: ${formData.vibe}
+- Reference Sites: ${formData.referenceSites || 'None specified'}
+- Pages Needed: ${formData.pages.join(', ')}
+- Key Homepage Message: "${formData.keyMessage}"
+- Primary CTA: "${formData.ctaText}"
+- Content Status: ${formData.contentReady}
+- Features: ${formData.features.join(', ') || 'None'}
+- Additional Requirements: ${formData.additionalNotes || 'None'}
+- Domain: ${formData.domainName || 'Not yet'}
+- Timeline: ${formData.timeline}
+- Budget: ${formData.budget || 'Not specified'}`;
+
+                console.log('%c=== COPILOT PROMPT ===', 'color: #6366f1; font-size: 14px; font-weight: bold;');
+                console.log(copilotPrompt);
+                console.log('%c======================', 'color: #6366f1; font-size: 14px; font-weight: bold;');
+
+                sendToGoogleSheet({
+                    submittedAt: new Date().toISOString(),
+                    businessName: formData.businessName,
+                    businessDesc: formData.businessDesc,
+                    purpose: formData.purpose,
+                    colorScheme: formData.colorScheme,
+                    vibe: formData.vibe,
+                    referenceSites: formData.referenceSites,
+                    pages: formData.pages,
+                    keyMessage: formData.keyMessage,
+                    ctaText: formData.ctaText,
+                    contentReady: formData.contentReady,
+                    features: formData.features,
+                    additionalNotes: formData.additionalNotes,
+                    userName: formData.userName,
+                    userEmail: formData.userEmail,
+                    userPhone: formData.userPhone,
+                    domainName: formData.domainName,
+                    timeline: formData.timeline,
+                    budget: formData.budget,
+                    copilotPrompt
+                });
+
+            }, 200);
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                const tag = e.target.tagName;
+                if (tag !== 'TEXTAREA' && tag !== 'BUTTON') {
+                    e.preventDefault();
+                    if (currentStep === totalSteps) submitForm();
+                    else nextStep();
+                }
+            }
+        });
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+</html>
